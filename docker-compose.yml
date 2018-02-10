@@ -5,3 +5,8 @@ services:
     container_name: mysql
     env_file:
       - ./config/mysql.env
+    ports:
+      - 3306:3306
+    volumes:
+      - /Users/Goyder/Projects/docker_mysql/data_dir:/var/lib/mysql
+      - /Users/Goyder/Projects/docker_mysql/init_scripts:/docker-entrypoint-initdb.d
