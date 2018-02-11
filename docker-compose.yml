@@ -10,3 +10,21 @@ services:
     volumes:
       - /Users/Goyder/Projects/docker_mysql/data_dir:/var/lib/mysql
       - /Users/Goyder/Projects/docker_mysql/init_scripts:/docker-entrypoint-initdb.d
+    networks:
+      - enviro_net
+
+  grafana:
+    depends_on:
+      - mysql
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    networks:
+      - enviro_net
+    links:
+      - mysql:mysql
+
+networks:
+  enviro_net:
+    driver: bridge
