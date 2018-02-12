@@ -1,1 +1,2 @@
-data_dir/*
+mysql_data_dir/*
+grafana_data_dir/*

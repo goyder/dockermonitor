@@ -8,8 +8,8 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - /Users/Goyder/Projects/docker_mysql/data_dir:/var/lib/mysql
-      - /Users/Goyder/Projects/docker_mysql/init_scripts:/docker-entrypoint-initdb.d
+      - ./mysql_data_dir:/var/lib/mysql
+      - ./init_scripts:/docker-entrypoint-initdb.d
     networks:
       - enviro_net
 
@@ -24,6 +24,8 @@ services:
       - enviro_net
     links:
       - mysql:mysql
+    volumes:
+      - ./grafana_data_dir:/var/lib/grafana
 
 networks:
   enviro_net:
