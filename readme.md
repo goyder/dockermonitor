@@ -1,5 +1,5 @@
 # Docker Monitor
-* Goyder 2018 * 
+*Goyder 2018* 
 
 A basic project, build primarily in Docker containers, to link together a host of technologies.
 
