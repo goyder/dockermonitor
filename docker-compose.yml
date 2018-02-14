@@ -27,6 +27,19 @@ services:
     volumes:
       - ./grafana_data_dir:/var/lib/grafana
 
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    ports:
+      - 1883:1883
+      - 9001:9001
+    networks:
+      - enviro_net 
+    volumes:
+#       - ./mosquitto/conf:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log 
+
 networks:
   enviro_net:
     driver: bridge
