@@ -40,6 +40,9 @@ services:
       - ./mosquitto/data:/mosquitto/data
       - ./mosquitto/log:/mosquitto/log 
 
+  mock_data_generator:
+    build: ./mock_data_generator
+
 networks:
   enviro_net:
     driver: bridge
