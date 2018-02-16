@@ -28,6 +28,8 @@ services:
       - ./grafana_data_dir:/var/lib/grafana
 
   mosquitto:
+    depends_on: 
+      - mysql
     image: eclipse-mosquitto
     container_name: mosquitto
     ports:
@@ -40,8 +42,24 @@ services:
       - ./mosquitto/data:/mosquitto/data
       - ./mosquitto/log:/mosquitto/log 
 
+  mqtt_listener:
+    depends_on: 
+      - mosquitto
+    build: ./mqtt_listener 
+    ports:
+      - 1884:1883
+    networks:
+      - enviro_net
+
   mock_data_generator:
+    depends_on: 
+      - mosquitto
+      - mqtt_listener
     build: ./mock_data_generator
+    ports:
+      - 1885:1883
+    networks:
+      - enviro_net
 
 networks:
   enviro_net:
