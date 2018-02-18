@@ -6,5 +6,5 @@ RUN apk add --update --no-cache mariadb-client-libs \
   musl-dev
 RUN pip install paho-mqtt mysqlclient
 RUN apk del .build-deps
-ADD mqtt_listener_entrypoint.py /
-CMD [ "python", "./mqtt_listener_entrypoint.py" ] 
+ADD entrypoint.py /
+CMD [ "python", "./entrypoint.py" ] 

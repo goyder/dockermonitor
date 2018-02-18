@@ -4,14 +4,14 @@ services:
     image: mysql
     container_name: mysql
     env_file:
-      - ./config/mysql.env
+      - ./mysql/config/mysql.env
     ports:
       - 3306:3306
     volumes:
-      - ./mysql_data_dir:/var/lib/mysql
-      - ./init_scripts:/docker-entrypoint-initdb.d
+      - ./mysql/data_dir:/var/lib/mysql
+      - ./mysql/init_scripts:/docker-entrypoint-initdb.d
     networks:
-      - enviro_net
+      - monitor
 
   grafana:
     depends_on:
@@ -21,11 +21,11 @@ services:
     ports:
       - 3000:3000
     networks:
-      - enviro_net
+      - monitor
     links:
       - mysql:mysql
     volumes:
-      - ./grafana_data_dir:/var/lib/grafana
+      - ./grafana/data_dir:/var/lib/grafana
 
   mosquitto:
     depends_on: 
@@ -36,7 +36,7 @@ services:
       - 1883:1883
       - 9001:9001
     networks:
-      - enviro_net 
+      - monitor 
     volumes:
 #       - ./mosquitto/conf:/mosquitto/config
       - ./mosquitto/data:/mosquitto/data
@@ -49,18 +49,18 @@ services:
     ports:
       - 1884:1883
     networks:
-      - enviro_net
+      - monitor
 
-  mock_data_generator:
+  data_generator:
     depends_on: 
       - mosquitto
       - mqtt_listener
-    build: ./mock_data_generator
+    build: ./data_generator
     ports:
       - 1885:1883
     networks:
-      - enviro_net
+      - monitor
 
 networks:
-  enviro_net:
+  monitor:
     driver: bridge
