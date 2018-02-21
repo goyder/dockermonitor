@@ -3,6 +3,9 @@
 # When it hears something it cares about, publish to the database.
 
 import paho.mqtt.client as mqtt
+import mqtt_listener.config as CONFIG
+import mqtt_listener.credentials as CREDENTIALS
+
 print("I am running.")
 
 # Stub, to prove this works
