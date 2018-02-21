@@ -17,27 +17,28 @@ client.connect("mosquitto", port=1883)
 
 # We'll mock up some values and have them wander by random force.
 temperature = 25.0
-humidity    = 70
+humidity = 70
 t = 0
 
 while True:
+
     message = {
-        "Sensor":"Kitchen",
-        "Measure":"Temperature",
-        "Unit":"deg C",
-        "Time":time.strftime("%H:%M:%S %d/%m/%Y"),
-        "Value":temperature,
-        "Debug":1
+        "Sensor":   "Kitchen",
+        "Measure":  "Temperature",
+        "Unit":     "deg C",
+        "Time":     time.strftime("%H:%M:%S %d/%m/%Y"),
+        "Value":    temperature,
+        "Debug":    1
     }
     client.publish("home/kitchen", payload=json.dumps(message))
 
     message = {
-        "Sensor":"Kitchen",
-        "Measure":"Humidity",
-        "Unit":"percent",
-        "Time":time.strftime("%H:%M:%S %d/%m/%Y"),
-        "Value":humidity,
-        "Debug":1
+        "Sensor":   "Kitchen",
+        "Measure":  "Humidity",
+        "Unit":     "percent",
+        "Time":     time.strftime("%H:%M:%S %d/%m/%Y"),
+        "Value":    humidity,
+        "Debug":    1
     }
     client.publish("home/kitchen", payload=message)
 
