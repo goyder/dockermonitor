@@ -11,9 +11,11 @@ import random
 import time
 import json
 
+import config
+
 # Connect to our MQTT server
 client = mqtt.Client()
-client.connect("mosquitto", port=1883)
+client.connect(config.HOST_URL, port=config.HOST_PORT)
 
 # We'll mock up some values and have them wander by random force.
 temperature = 25.0
@@ -21,7 +23,6 @@ humidity = 70
 t = 0
 
 while True:
-
     message = {
         "Sensor":   "Kitchen",
         "Measure":  "Temperature",
@@ -44,8 +45,9 @@ while True:
 
     # Alter the weather conditions
     temperature += random.random()*0.05
-    humdity = humidity + math.sin(t/10)*20 
+    humidity = humidity + math.sin(t/10)*20
     
     # Tick
     t += 1
     time.sleep(1)
+
