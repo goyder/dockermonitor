@@ -41,7 +41,7 @@ while True:
         "Value":    humidity,
         "Debug":    1
     }
-    client.publish("home/kitchen", payload=message)
+    client.publish("home/kitchen", payload=json.dumps(message))
 
     # Alter the weather conditions
     temperature += random.random()*0.05
