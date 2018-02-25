@@ -27,6 +27,21 @@ class TestInterpreter(unittest.TestCase):
             )
         )
 
+    def test_wholly_incomplete_message_rejected(self):
+        """
+        If a message is receieved that does not satisfy the requirements for data entry, 
+        ensure it is rejected.
+        TODO: What does it mean for a message to be rejected?
+        """
+        with self.assertRaises(ValueError) as context:
+            mqtt_listener.interpreter.message_to_json("INCOMPLETE MESSAGE") 
+
+        self.assertTrue(
+            context.exception == ValueError,
+            "ValueError was not returned. Exception returned was: {0}".format(
+                type(context.exception))
+            )
+
     def test_query_generation(self):
         """
         Ensure that we generate an INSERT query with the list of columns and data.
@@ -39,6 +54,3 @@ class TestInterpreter(unittest.TestCase):
                 sql_statement, TEST_INSERT_STATEMENT
             )
         )
-
-
-    
