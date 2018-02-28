@@ -1,5 +1,6 @@
 import unittest
 import unittest.mock as mock
+from unittest.mock import patch
 
 import mqtt_listener.interpreter 
 from . import *
@@ -14,6 +15,42 @@ class TestInterpreter(unittest.TestCase):
     Tests for the Interpreter functions.
     """
 
+    @patch("mqtt_listener.interpreter.bad_message_endpoint")
+    def test_bad_message_calls_bad_endpoint(self, mock_endpoint):
+        """
+        If we pass a bad message, it needs to end up at the bad end-point.
+        """
+        bad_messages = (TEST_MESSAGE_IRRELEVANT, TEST_MESSAGE_MISSING_COLUMNS) 
+        for bad_message in bad_messages:
+            mqtt_listener.interpreter.interpret_message(bad_message)
+
+        self.assertEqual(
+            True,
+            mock_endpoint.call_count == len(bad_messages),
+                "Expected bad message endpoint to be called {0} times; was only called {1} times.".format(
+                len(bad_messages),
+                mock_endpoint.call_count
+            )
+        )
+
+    @patch("mqtt_listener.interpreter.good_message_endpoint")
+    def test_good_message_calls_good_endpoint(self, mock_endpoint):
+        """
+        If we pass a good message, it should end up at the good end-point.
+        """
+        good_messages = (TEST_MESSAGE,)
+        for good_message in good_messages:
+            mqtt_listener.interpreter.interpret_message(good_message)
+
+        self.assertEqual(
+            True,
+            mock_endpoint.call_count == len(good_messages),
+            "Expected good message endpoint to be called {0} times; was only called {1} times.".format(
+                len(good_messages),
+                mock_endpoint.call_count
+            )
+        )
+
     def test_json_to_dict(self):
         """
         Ensure we can convert message to a JSON.
@@ -27,21 +64,6 @@ class TestInterpreter(unittest.TestCase):
             )
         )
 
-    def test_wholly_incomplete_message_rejected(self):
-        """
-        If a message is receieved that does not satisfy the requirements for data entry, 
-        ensure it is rejected.
-        TODO: What does it mean for a message to be rejected?
-        """
-        with self.assertRaises(ValueError) as context:
-            mqtt_listener.interpreter.message_to_json("INCOMPLETE MESSAGE") 
-
-        self.assertTrue(
-            context.exception == ValueError,
-            "ValueError was not returned. Exception returned was: {0}".format(
-                type(context.exception))
-            )
-
     def test_query_generation(self):
         """
         Ensure that we generate an INSERT query with the list of columns and data.
@@ -54,3 +76,39 @@ class TestInterpreter(unittest.TestCase):
                 sql_statement, TEST_INSERT_STATEMENT
             )
         )
+
+
+class TestBadMessageChecking(unittest.TestCase):
+    """
+    Function tests to ensure our bad messages get rejected appropriately.
+    """
+
+    def test_invalid_messages_are_rejected(self):
+        """
+        When we pass in bad messages, ensure that they are rejected.
+        """
+        for bad_message in (TEST_MESSAGE_IRRELEVANT, ):
+            is_message_valid = mqtt_listener.interpreter.validate_message(bad_message)
+            self.assertEqual(
+                True,
+                is_message_valid["valid"] == False,
+                "Expected validation for message:\n{0}\nto be False. Got:\n{1}".format(
+                    bad_message,
+                    is_message_valid["valid"]
+                )
+            )
+
+    def test_message_with_missing_columns_are_rejected(self):
+        """
+        When a message is missing some columns, ensure they are rejected.
+        """
+        for bad_message in (TEST_MESSAGE_MISSING_COLUMNS, ):
+            is_message_valid = mqtt_listener.interpreter.validate_message(bad_message)
+            self.assertEqual(
+                True,
+                is_message_valid["valid"] == False,
+                "Expected validation for message:\n{0}\nto be False. Got:\n{1}".format(
+                    bad_message,
+                    is_message_valid["valid"]
+                )
+            )
