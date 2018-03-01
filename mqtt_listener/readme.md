@@ -14,10 +14,10 @@ The message is to be sent over the MQTT platform as a JSON message, containing t
 * *Debug*:      Whether this is a real data point or simply for debugging purposes.
 
 An input message might therefore be:
-`{"Sensor":"Kitchen", "Measure":"Temperature", "Unit":"deg C", "Time":"20:47:40 23/01/2017", "Value":22.70, "Debug":0}`
+`{"Sensor":"Kitchen", "Measure":"Temperature", "Unit":"deg C", "Time":"23-01-2018 20:47:40", "Value":22.70, "Debug":0}`
 
 ### Time
-Time is presented in the format `%H:%M:%S %d/%m/%Y`.
+Time is presented in the format `%Y-%m-%d %H:%M:%S`.
 
 ## Database
 In this instance of the monitor, interpreter will:

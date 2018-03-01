@@ -9,3 +9,4 @@ COLUMNS = [
     "Value",
     "Debug",
 ]
+TABLE_NAME="data"

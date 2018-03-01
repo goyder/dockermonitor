@@ -2,7 +2,9 @@ CREATE DATABASE IF NOT EXISTS main_db;
 USE main_db;
 CREATE TABLE IF NOT EXISTS data (
   row_ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  ID varCHAR(30),
+  Sensor varCHAR(30),
+  Measure varChar(30),
+  Unit varCHAR(30),
   Time DATETIME,
   Value REAL,
   Debug INTEGER

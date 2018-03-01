@@ -85,7 +85,8 @@ def bad_message_endpoint(bad_message, reason=None):
 
 
 def message_to_db(json_message, host=config.DATABASE_SERVER, port=config.DATABASE_PORT, user=credentials.USERNAME,
-                  passwd=credentials.PASSWORD, db=config.DATABASE_NAME):
+                  passwd=credentials.PASSWORD, db=config.DATABASE_NAME, table=config.TABLE_NAME,
+                  columns=config.COLUMNS):
     """
     Take a JSON message and write it to a mysql database.
     :param message: JSON message to be written to database.
@@ -96,13 +97,13 @@ def message_to_db(json_message, host=config.DATABASE_SERVER, port=config.DATABAS
         host=host,
         port=port,
         user=user,
-        passwd=passwd,
-        db=db
+        password=passwd,
+        database=db
     )
     cursor = conn.cursor()
 
     # Form the SQL statement
-    sql = json_to_statement(config.DATABASE_NAME, config.COLUMNS)
+    sql = json_to_statement(table, columns)
 
     # Insert into the database
     cursor.execute(sql, json_message)
