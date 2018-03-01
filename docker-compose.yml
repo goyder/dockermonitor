@@ -50,6 +50,8 @@ services:
       - 1884:1883
     networks:
       - monitor
+    volumes:
+      - ./mqtt_listener/logs:/logs
 
   data_generator:
     depends_on: 

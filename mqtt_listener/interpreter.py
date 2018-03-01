@@ -1,4 +1,9 @@
 import json
+import logging
+import yaml
+import mysqlclient
+
+logger = logging.getLogger(__name__)
 
 from mqtt_listener import config
 
@@ -17,6 +22,9 @@ If it is not valid it should be dumped into a suitable end-point (e.g. logged an
 
 If a message is validated, it is to be submitted to a database.
 """
+
+def make_a_noise():
+    logger.info("Hello world from {0}!".format(__name__))
 
 def interpret_message(message):
     """
@@ -63,6 +71,20 @@ def message_to_json(message):
     return json_message
 
 
+def good_message_endpoint(good_message):
+    """
+    End point for a validated message.
+    """
+    pass
+
+
+def bad_message_endpoint(bad_message, reason=None):
+    """
+    End point for a message that is invalid in some way.
+    """
+    pass
+
+
 def json_to_statement(table, columns):
     """
     Convert a JSON message to an INSERT statement.
@@ -79,17 +101,3 @@ def json_to_statement(table, columns):
             statement += ", "
     statement += ")"
     return statement
-
-
-def good_message_endpoint(good_message):
-    """
-    End point for a validated message.
-    """
-    pass
-
-
-def bad_message_endpoint(bad_message, reason=None):
-    """
-    End point for a message that is invalid in some way.
-    """
-    pass
