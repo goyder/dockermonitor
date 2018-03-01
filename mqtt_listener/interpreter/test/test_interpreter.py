@@ -2,7 +2,7 @@ import unittest
 import unittest.mock as mock
 from unittest.mock import patch
 
-from mqtt_listener.interpreter import interpreter
+from .. import interpreter
 from . import *
 
 """

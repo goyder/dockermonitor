@@ -3,7 +3,7 @@ integration_test_interpreter.py
 Larger scale tests that can only be run with other modules running.
 """
 
-from mqtt_listener import interpreter
+from .. import interpreter
 import unittest
 from . import *
 

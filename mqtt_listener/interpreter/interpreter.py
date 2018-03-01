@@ -4,7 +4,9 @@ import MySQLdb
 
 logger = logging.getLogger(__name__)
 
-from mqtt_listener.interpreter import config as config, credentials as credentials
+# from mqtt_listener.interpreter import config as config, credentials as credentials
+from . import config
+from . import credentials
 
 """
 Interpreter.py
