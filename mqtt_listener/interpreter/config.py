@@ -1,6 +1,6 @@
 DATABASE_SERVER = "mysql"
 DATABASE_PORT = 3306
-
+DATABASE_NAME = "main_db"
 COLUMNS = [
     "Sensor",
     "Measure",

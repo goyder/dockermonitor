@@ -43,6 +43,7 @@ services:
       - ./mosquitto/log:/mosquitto/log 
 
   mqtt_listener:
+    container_name: mqtt_listener
     depends_on: 
       - mosquitto
     build: ./mqtt_listener 
@@ -54,6 +55,7 @@ services:
       - ./mqtt_listener/logs:/logs
 
   data_generator:
+    container_name: data_generator
     depends_on: 
       - mosquitto
       - mqtt_listener

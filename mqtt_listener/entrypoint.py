@@ -3,19 +3,18 @@
 # When it hears something it cares about, publish to the database.
 
 import paho.mqtt.client as mqtt
-import config as CONFIG
-import credentials as CREDENTIALS
-
-import logging
 import yaml
 import logging.config
+import logging
+import os
 
-with open("logging.yaml", 'rt') as f:
+import interpreter
+
+with open("logging.yaml", 'r') as f:
     config = yaml.safe_load(f.read())
 logging.config.dictConfig(config)
 
 logging.info("I am running.")
-print("I am running.")
 
 # Stub, to prove this works
 def mock_on_message(client, userdata, msg):
