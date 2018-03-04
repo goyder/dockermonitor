@@ -1,0 +1,31 @@
+# config file version
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+deleteDatasources:
+  - name: mysql
+    orgId: 1
+
+# list of datasources to insert/update depending
+# whats available in the database
+datasources:
+  # <string, required> name of the datasource. Required
+- name: mysql
+  # <string, required> datasource type. Required
+  type: mysql
+  # <string, required> access mode. direct or proxy. Required
+  access: direct
+  # <string> url
+  url: mysql:3306
+  # <string> database password, if used
+  password: grafana
+  # <string> database user, if used
+  user: grafana
+  # <string> database name, if used
+  database: main_db
+  # <bool> mark as default datasource. Max one per org
+  isDefault: true
+  # <map> fields that will be converted to json and stored in json_data
+  version: 1
+  # <bool> allow users to edit datasources from the UI.
+  editable: false
