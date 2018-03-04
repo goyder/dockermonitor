@@ -27,7 +27,7 @@ while True:
         "Sensor":   "Kitchen",
         "Measure":  "Temperature",
         "Unit":     "deg C",
-        "Time":     time.strftime("%H:%M:%S %d/%m/%Y"),
+        "Time":     time.strftime("%Y-%m-%d %H:%M:%S"),
         "Value":    temperature,
         "Debug":    1
     }
@@ -37,7 +37,7 @@ while True:
         "Sensor":   "Kitchen",
         "Measure":  "Humidity",
         "Unit":     "percent",
-        "Time":     time.strftime("%H:%M:%S %d/%m/%Y"),
+        "Time":     time.strftime("%Y-%m-%d %H:%M:%S"),
         "Value":    humidity,
         "Debug":    1
     }
@@ -45,9 +45,9 @@ while True:
 
     # Alter the weather conditions
     temperature += random.random()*0.05
-    humidity = humidity + math.sin(t/10)*20
+    humidity = humidity + math.sin(t/10)*0.3
     
     # Tick
     t += 1
-    time.sleep(1)
+    time.sleep(30)
 

@@ -31,9 +31,9 @@ def interpret_message(message):
     """
     message_valid = validate_message(message)
     if message_valid["valid"]:
-        good_message_endpoint(message)
+        good_message_endpoint(message_valid["json_message"])
     else:
-        bad_message_endpoint(message)
+        bad_message_endpoint(message, reason=message_valid["reason"])
 
 
 def validate_message(message):
@@ -59,7 +59,7 @@ def validate_message(message):
         return {"valid": False, "reason": "Missing column(s): {0}".format(missing_columns)}
 
     # Everything is good!
-    return {"valid": True, "reason": "Pass"}
+    return {"valid": True, "reason": "Pass", "json_message": json_message}
         
 
 def message_to_json(message):
@@ -74,14 +74,15 @@ def good_message_endpoint(good_message):
     """
     End point for a validated message.
     """
-    pass
+    logger.info("Good message, sending to database. Message:\n{0}".format(good_message))
+    message_to_db(good_message)
 
 
 def bad_message_endpoint(bad_message, reason=None):
     """
     End point for a message that is invalid in some way.
     """
-    pass
+    logger.info("Invalid message:\n{0}\nReason:\n{1}".format(bad_message, reason))
 
 
 def message_to_db(json_message, host=config.DATABASE_SERVER, port=config.DATABASE_PORT, user=credentials.USERNAME,
