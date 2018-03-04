@@ -1,2 +1,4 @@
 *
+!provisioning
+!provisioning/**/*.yml
 !.gitignore
