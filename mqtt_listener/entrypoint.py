@@ -6,23 +6,25 @@ import paho.mqtt.client as mqtt
 import yaml
 import logging.config
 import logging
-import os
 
+import CONFIG
+import CREDENTIALS
 import interpreter.interpreter as interpreter
 
 with open("logging.yaml", 'r') as f:
-    config = yaml.safe_load(f.read())
-logging.config.dictConfig(config)
-
+    logging_config = yaml.safe_load(f.read())
+logging.config.dictConfig(logging_config)
 logging.info("I am running.")
 
-# Stub, to prove this works
+
 def mock_on_message(client, userdata, msg):
-    print(msg.topic + ": " + str(msg.payload))
+    logging.info(msg.topic + ": " + str(msg.payload))
+
 
 def on_connect(client, userdata, flags, rc):
-    print("Connected with result code: " + str(rc))
+    logging.info("Connected with result code: " + str(rc))
     client.subscribe("home/#")
+
 
 def on_message(client, userdata, msg):
     """
@@ -34,12 +36,12 @@ def on_message(client, userdata, msg):
     """
     payload = str(msg.payload, encoding="utf-8")
     logging.info("Message received:\n{0}".format(payload))
-    interpreter.interpret_message(payload)
-
+    interpreter_instance.interpret_message(payload)
 
 
 # Take it away
 client = mqtt.Client()
+interpreter_instance = interpreter.Interpreter(config=CONFIG.config, credentials=CREDENTIALS.credentials)
 client.on_connect = on_connect
 client.on_message = on_message
 client.connect("mosquitto", port=1883)

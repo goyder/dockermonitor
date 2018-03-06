@@ -4,25 +4,37 @@ from unittest.mock import patch
 
 from .. import interpreter
 from . import *
+from .TEST_CONFIG import config
+from .TEST_CREDENTIALS import credentials
 
 """
 test_interpreter.py
 Tests to ensure that we can write to the database as required
 """
 
+
 class TestInterpreter(unittest.TestCase):
     """
     Tests for the Interpreter functions.
     """
 
-    @patch.object(interpreter, "bad_message_endpoint")
-    def test_bad_message_calls_bad_endpoint(self, mock_endpoint):
+    def setUp(self):
+        """
+        Build a toy interpreter class.
+        :return:
+        """
+        self.interpreter = interpreter.Interpreter(config=config, credentials=credentials)
+
+    def test_bad_message_calls_bad_endpoint(self):
         """
         If we pass a bad message, it needs to end up at the bad end-point.
         """
+        self.interpreter.bad_message_endpoint = unittest.mock.MagicMock()
+        mock_endpoint = self.interpreter.bad_message_endpoint
+
         bad_messages = (TEST_MESSAGE_IRRELEVANT, TEST_MESSAGE_MISSING_COLUMNS) 
         for bad_message in bad_messages:
-            interpreter.interpret_message(bad_message)
+            self.interpreter.interpret_message(bad_message)
 
         self.assertEqual(
             True,
@@ -33,14 +45,16 @@ class TestInterpreter(unittest.TestCase):
             )
         )
 
-    @patch.object(interpreter, "good_message_endpoint")
-    def test_good_message_calls_good_endpoint(self, mock_endpoint):
+    def test_good_message_calls_good_endpoint(self):
         """
         If we pass a good message, it should end up at the good end-point.
         """
+        self.interpreter.good_message_endpoint = unittest.mock.MagicMock()
+        mock_endpoint = self.interpreter.good_message_endpoint
+
         good_messages = (TEST_MESSAGE,)
         for good_message in good_messages:
-            interpreter.interpret_message(good_message)
+            self.interpreter.interpret_message(good_message)
 
         self.assertEqual(
             True,
@@ -77,18 +91,12 @@ class TestInterpreter(unittest.TestCase):
             )
         )
 
-
-class TestBadMessageChecking(unittest.TestCase):
-    """
-    Function tests to ensure our bad messages get rejected appropriately.
-    """
-
     def test_invalid_messages_are_rejected(self):
         """
         When we pass in bad messages, ensure that they are rejected.
         """
         for bad_message in (TEST_MESSAGE_IRRELEVANT, ):
-            is_message_valid = interpreter.validate_message(bad_message)
+            is_message_valid = self.interpreter.validate_message(bad_message)
             self.assertEqual(
                 True,
                 is_message_valid["valid"] == False,
@@ -103,7 +111,7 @@ class TestBadMessageChecking(unittest.TestCase):
         When a message is missing some columns, ensure they are rejected.
         """
         for bad_message in (TEST_MESSAGE_MISSING_COLUMNS, ):
-            is_message_valid = interpreter.validate_message(bad_message)
+            is_message_valid = self.interpreter.validate_message(bad_message)
             self.assertEqual(
                 True,
                 is_message_valid["valid"] == False,
