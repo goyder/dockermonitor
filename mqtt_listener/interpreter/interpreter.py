@@ -104,7 +104,12 @@ class Interpreter:
         End point for a validated message.
         """
         logger.info("Good message, sending to database. Message:\n{0}".format(good_message))
-        self.message_to_db(good_message)
+        try:
+            self.message_to_db(good_message)
+        except Exception as e:  # This should be capturing only the _mysql_exceptions.OperationalError
+            logger.error("Encountered error when writing message to database.")
+            logger.error(e.args)
+
 
     def bad_message_endpoint(self, bad_message, reason=None):
         """
